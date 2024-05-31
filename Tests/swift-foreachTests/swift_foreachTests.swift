@@ -22,4 +22,26 @@ final class swift_foreachTests: XCTestCase {
         }
         XCTAssertEqual(count, 1_000_000 * 10)
     }
+
+    func testSumForIn() {
+        var sum = 0
+        let random = RandomUInt8Sequence(count: 1_000_000)
+
+        for value in random {
+            sum += Int(value)
+        }
+        // This should success in most cases; in rare cases the value can be 128 or 126
+        XCTAssertEqual(sum / 1_000_000, 127)
+    }
+
+    func testSumForEach() {
+        var sum = 0
+        let random = RandomUInt8Sequence(count: 1_000_000)
+
+        random.forEach {
+            sum += Int($0)
+        }
+        // This should success in most cases; in rare cases the value can be 128 or 126
+        XCTAssertEqual(sum / 1_000_000, 127)
+    }
 }
